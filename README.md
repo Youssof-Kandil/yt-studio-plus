@@ -11,7 +11,8 @@
 <p align="center">
   Chrome Web Store (coming soon) ·
   <a href="#install-from-source">Install from source</a> ·
-  <a href="PRIVACY.md">Privacy</a>
+  <a href="PRIVACY.md">Privacy</a> ·
+  <a href="https://ko-fi.com/youssofkandil">☕ Support on Ko-fi</a>
 </p>
 
 <!-- Add screenshots to docs/ and uncomment:
@@ -108,6 +109,10 @@ There are no servers, no analytics and no tracking. Templates are stored in `chr
 ## Contributing
 
 Bug reports and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Support
+
+If Studio Plus saves you time, you can [buy me a coffee on Ko-fi ☕](https://ko-fi.com/youssofkandil). It's completely optional, and every feature stays free.
 
 ## License
 

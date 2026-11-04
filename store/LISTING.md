@@ -49,6 +49,8 @@ PRIVATE BY DESIGN
 
 Everything Studio Plus adds is tinted soft violet, so you always know what's ours and what's YouTube's.
 
+Enjoying it? Support development: https://ko-fi.com/youssofkandil
+
 Studio Plus is not affiliated with, endorsed by or sponsored by YouTube or Google LLC. YouTube is a trademark of Google LLC.
 ```
 
