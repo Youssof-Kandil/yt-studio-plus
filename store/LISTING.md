@@ -45,11 +45,9 @@ A list of your other videos next to any video's details or analytics page. Jump 
 PRIVATE BY DESIGN
 • No servers, no tracking, no analytics. Your data never leaves your browser.
 • Templates only fill in the form – nothing is saved or published until you click Save/Publish yourself.
-• Open source: https://github.com/YOUR_GITHUB_USERNAME/studio-plus
+• Open source: https://github.com/Youssof-Kandil/studio-plus
 
 Everything Studio Plus adds is tinted soft violet, so you always know what's ours and what's YouTube's.
-
-Enjoying it? Support development: https://buymeacoffee.com/YOUR_BMC_USERNAME
 
 Studio Plus is not affiliated with, endorsed by or sponsored by YouTube or Google LLC. YouTube is a trademark of Google LLC.
 ```
@@ -61,7 +59,7 @@ Studio Plus is not affiliated with, endorsed by or sponsored by YouTube or Googl
 - Screenshots (1 required, up to 5, **1280×800** or 640×400): take these yourself in Studio – see "Screenshots" below.
 
 **Official URL / Homepage:** your GitHub repo URL
-**Support URL:** `https://github.com/YOUR_GITHUB_USERNAME/studio-plus/issues`
+**Support URL:** `https://github.com/Youssof-Kandil/studio-plus/issues`
 
 ---
 
@@ -92,7 +90,7 @@ Then tick all three certifications:
 - ☑ I do not use or transfer user data to determine creditworthiness or for lending purposes
 
 **Privacy policy URL:** link to `PRIVACY.md` on GitHub, e.g.
-`https://github.com/YOUR_GITHUB_USERNAME/studio-plus/blob/main/PRIVACY.md`
+`https://github.com/Youssof-Kandil/studio-plus/blob/main/PRIVACY.md`
 
 ---
 

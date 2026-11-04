@@ -9,10 +9,9 @@
 </p>
 
 <p align="center">
-  <a href="https://chromewebstore.google.com/detail/YOUR_EXTENSION_ID">Chrome Web Store</a> ·
+  Chrome Web Store (coming soon) ·
   <a href="#install-from-source">Install from source</a> ·
-  <a href="PRIVACY.md">Privacy</a> ·
-  <a href="https://buymeacoffee.com/YOUR_BMC_USERNAME">☕ Buy me a coffee</a>
+  <a href="PRIVACY.md">Privacy</a>
 </p>
 
 <!-- Add screenshots to docs/ and uncomment:
@@ -109,10 +108,6 @@ There are no servers, no analytics and no tracking. Templates are stored in `chr
 ## Contributing
 
 Bug reports and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## Support
-
-If Studio Plus saves you time, you can [buy me a coffee ☕](https://buymeacoffee.com/YOUR_BMC_USERNAME). It's completely optional, and every feature stays free.
 
 ## License
 

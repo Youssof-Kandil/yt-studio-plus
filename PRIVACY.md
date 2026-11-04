@@ -42,6 +42,6 @@ If this policy changes, the new version will be published in the project's repos
 
 ## Contact
 
-Questions: open an issue at https://github.com/YOUR_GITHUB_USERNAME/studio-plus/issues
+Questions: open an issue at https://github.com/Youssof-Kandil/studio-plus/issues
 
 _Studio Plus is not affiliated with, endorsed by or sponsored by YouTube or Google LLC. YouTube is a trademark of Google LLC._
