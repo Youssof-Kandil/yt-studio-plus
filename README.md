@@ -116,6 +116,6 @@ If Studio Plus saves you time, you can [buy me a coffee on Ko-fi ☕](https://ko
 
 ## License
 
-[MIT](LICENSE)
+The code is under the [MIT](LICENSE) license. The name "Studio Plus" and its logo are not covered by it: if you publish a fork, give it a different name and icon. See [TRADEMARKS.md](TRADEMARKS.md).
 
 _Studio Plus is not affiliated with, endorsed by or sponsored by YouTube or Google LLC. YouTube is a trademark of Google LLC._

@@ -1,0 +1,22 @@
+# Basic checks on every pull request and push to main.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax check
+        run: for f in *.js; do node --check "$f"; done
+      - name: Manifest is valid JSON
+        run: jq empty manifest.json
+      - name: No remote scripts
+        run: |
+          if grep -nE "<script[^>]+src=[\"']https?:|importScripts\(['\"]https?:|eval\(" *.js; then
+            echo "Remote code or eval found"; exit 1
+          fi
