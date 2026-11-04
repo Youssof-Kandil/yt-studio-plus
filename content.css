@@ -1,0 +1,48 @@
+/* Page-level rules (the panel and pages live in shadow roots with their own CSS). */
+
+/* "Make room for panel": Studio's whole UI lives in a fixed full-screen
+   <ytcp-entity-page>. Narrow it so the panel sits beside it, not over it. */
+html.ysp-push ytcp-entity-page#entity-page,
+html.ysp-push ytcp-entity-page {
+  left: 0 !important;
+  right: var(--ysp-w, 400px) !important;
+  width: auto !important;
+}
+
+/* Upload dialog side-by-side: slide the dialog left so the panel fits next to it. */
+html.ysp-upload ytcp-uploads-dialog tp-yt-paper-dialog,
+html.ysp-upload ytcp-uploads-dialog #dialog {
+  left: 12px !important;
+  right: auto !important;
+  margin-left: 0 !important;
+  max-width: calc(100vw - var(--ysp-w, 400px) - 24px) !important;
+}
+
+/* Studio Plus signature colour (soft violet) for everything the extension adds */
+html { --ysp-accent: #6a4fd6; --ysp-accent-soft: rgba(106, 79, 214, 0.08); --ysp-accent-strong: rgba(106, 79, 214, 0.14); }
+html[dark] { --ysp-accent: #b3a4ff; --ysp-accent-soft: rgba(179, 164, 255, 0.08); --ysp-accent-strong: rgba(179, 164, 255, 0.16); }
+
+/* Extra items in Studio's left menu — same geometry as Studio's own items
+   (40px row, 12px side margin, icon at 24px, label at 72px, 8px radius) */
+li.ysp-nav-li { list-style: none; }
+.ysp-nav-item {
+  display: flex; align-items: center; gap: 24px; cursor: pointer; box-sizing: border-box;
+  height: 40px; margin: 0 12px; padding: 8px 8px 8px 12px; border-radius: 8px;
+  font-family: Roboto, Arial, sans-serif; font-size: 14px; font-weight: 500; line-height: 20px;
+  color: var(--ysp-accent); user-select: none; outline: none;
+}
+.ysp-nav-item:hover, .ysp-nav-item:focus-visible { background: var(--ysp-accent-soft); }
+li.ysp-selected .ysp-nav-item { background: var(--ysp-accent-strong); }
+.ysp-nav-icon { display: inline-flex; width: 24px; height: 24px; flex: none; }
+.ysp-nav-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+li.ysp-mini .ysp-nav-item { flex-direction: column; justify-content: center; gap: 4px; height: auto; margin: 0 4px; padding: 12px 0; }
+li.ysp-mini .ysp-nav-label { font-size: 10px; max-width: 64px; white-space: normal; text-align: center; line-height: 1.2; }
+
+/* Likes column on the Content page */
+.ysp-likes-h { white-space: nowrap; color: var(--ysp-accent) !important; }
+.ysp-likes-cell { display: flex !important; flex-direction: column; justify-content: center; align-items: flex-end; gap: 2px; }
+.ysp-likes-pct { font-size: 13px; }
+.ysp-likes-sub { font-size: 11px; opacity: .7; white-space: nowrap; }
+.ysp-likes-muted { opacity: .5; }
+.ysp-likes-bar { display: block; width: 90px; height: 3px; border-radius: 2px; background: rgba(128, 128, 128, 0.35); overflow: hidden; }
+.ysp-likes-fill { display: block; height: 100%; background: var(--ysp-accent); }
