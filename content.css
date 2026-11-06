@@ -46,3 +46,9 @@ li.ysp-mini .ysp-nav-label { font-size: 10px; max-width: 64px; white-space: norm
 .ysp-likes-muted { opacity: .5; }
 .ysp-likes-bar { display: block; width: 90px; height: 3px; border-radius: 2px; background: rgba(128, 128, 128, 0.35); overflow: hidden; }
 .ysp-likes-fill { display: block; height: 100%; background: var(--ysp-accent); }
+
+/* Likes on Content overview cards */
+.ysp-card-likes { display: inline-flex; align-items: center; gap: 3px; margin-left: 8px; color: var(--ysp-accent); white-space: nowrap; }
+.ysp-card-likes > span { margin-right: 4px; }
+.ysp-card-thumb { width: 14px; height: 14px; fill: currentColor; flex: none; }
+.ysp-card-thumb-down { transform: rotate(180deg); }

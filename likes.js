@@ -33,7 +33,61 @@
   }
 
   function removeAll() {
-    document.querySelectorAll('.ysp-likes-cell, .ysp-likes-h').forEach((e) => e.remove());
+    document.querySelectorAll('.ysp-likes-cell, .ysp-likes-h, .ysp-card-likes').forEach((e) => e.remove());
+  }
+
+  // ---- Video cards (Content overview shelves: "Videos", "Shorts") ----
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const THUMB = 'M2 21h4V9H2v12zm20-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 6.59 7.59C6.22 7.95 6 8.45 6 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z';
+  function thumb(down) {
+    const s = document.createElementNS(SVG_NS, 'svg');
+    s.setAttribute('viewBox', '0 0 24 24');
+    s.setAttribute('class', 'ysp-card-thumb' + (down ? ' ysp-card-thumb-down' : ''));
+    const p = document.createElementNS(SVG_NS, 'path');
+    p.setAttribute('d', THUMB);
+    s.append(p);
+    return s;
+  }
+  function cardContent(m) {
+    if (!m) return [h('span', { text: '…' })];
+    if (m.likes == null) return [h('span', { text: '—' })];
+    return [
+      thumb(false), h('span', { text: YSP.fmtNum(m.likes || 0) }),
+      thumb(true), h('span', { text: YSP.fmtNum(m.dislikes || 0) }),
+    ];
+  }
+  function cardVideoId(host) {
+    const m = (host.className || '').match(/\bcontent-id-([\w-]+)/);
+    return m && /^[\w-]{11}$/.test(m[1]) ? m[1] : null; // playlists have longer ids
+  }
+  function paintCards() {
+    const ids = [];
+    for (const host of document.querySelectorAll('yt-lockup-view-model [class*="content-id-"]')) {
+      const id = cardVideoId(host);
+      if (!id) continue;
+      const rows = host.querySelectorAll('yt-content-metadata-view-model .ytContentMetadataViewModelMetadataRow');
+      const row = rows[rows.length - 1];
+      // Only the stats row (has icons) – skip cards without view/comment counts.
+      if (!row || !row.querySelector('.ytContentMetadataViewModelLeadingIcon')) continue;
+      let el = row.querySelector('.ysp-card-likes');
+      if (!el || el.dataset.vid !== id) {
+        if (el) el.remove();
+        el = h('span', { class: 'ysp-card-likes', title: 'Likes · dislikes (Studio Plus)' });
+        el.dataset.vid = id;
+        row.append(el);
+      }
+      const c = cache.get(id);
+      const stamp = String(c ? c.at : 0);
+      if (el.dataset.stamp !== stamp) {
+        el.dataset.stamp = stamp;
+        el.replaceChildren(...cardContent(c && c.m));
+        if (c && c.m && c.m.likes != null) {
+          el.title = `${(c.m.likes || 0).toLocaleString()} likes · ${(c.m.dislikes || 0).toLocaleString()} dislikes (Studio Plus)`;
+        }
+      }
+      ids.push(id);
+    }
+    return ids;
   }
 
   async function fetchMissing(ids) {
@@ -55,6 +109,7 @@
 
   function paint() {
     if (!YSP.settings.likesColumn || !onContentPage()) return;
+    const cardIds = paintCards();
     // header
     const hdrComments = document.querySelector('ytcp-table-header .tablecell-comments.cell-header');
     if (hdrComments && !(hdrComments.nextElementSibling && hdrComments.nextElementSibling.classList.contains('ysp-likes-h'))) {
@@ -65,7 +120,7 @@
       hc.title = 'Added by Studio Plus';
       hdrComments.after(hc);
     }
-    const ids = [];
+    const ids = cardIds.slice();
     for (const row of document.querySelectorAll('ytcp-video-row')) {
       const id = rowVideoId(row);
       const comments = row.querySelector('.tablecell-comments');
@@ -89,7 +144,7 @@
 
   YSP.settingsReady.then(() => {
     YSP.onTick.add(() => {
-      if (!YSP.settings.likesColumn || !onContentPage()) { if (document.querySelector('.ysp-likes-cell, .ysp-likes-h')) removeAll(); return; }
+      if (!YSP.settings.likesColumn || !onContentPage()) { if (document.querySelector('.ysp-likes-cell, .ysp-likes-h, .ysp-card-likes')) removeAll(); return; }
       paint();
     });
   });
