@@ -60,6 +60,19 @@ On **Content → Shorts**, select one or more Shorts. The selection bar gets a v
 - The dialog shows each Short's current related video and a ✓ or ✕ per Short as it saves.
 - **Remove related video instead** clears the link on all selected Shorts. You click it twice to confirm.
 
+### Outlier score
+Next to every view count on the Content page, and on the Content overview cards, a violet badge such as **2.4×** shows how the video is doing against your typical video.
+- **Typical** is the median views of your last 30 public videos of the same kind, Shorts and long-form counted separately, that are older than 7 days.
+- The badge gets stronger at 1.5× and is solid at 3× or more. Hover over it for the exact baseline.
+- There's no badge on private or scheduled videos, or on videos under 2 days old.
+- You can turn it off in the panel's ⚙ settings.
+
+### Saved replies (canned responses)
+Every comment reply box in Studio gets a **Saved replies** button.
+- Pick a reply and it fills the box. You still click **Reply** yourself.
+- Placeholders: `{name}` (the commenter's name), `{handle}` (their @handle) and `{video}`.
+- You can add, edit and delete replies, or save whatever is typed in the box.
+
 ### Likes column
 The Content page gets back a **Likes (vs. dislikes)** column: like ratio, counts and a ratio bar. You can turn it off in the panel's ⚙ settings.
 
@@ -100,6 +113,8 @@ Either one writes `dist/studio-plus-<version>.zip` containing only the extension
 | `templates.js` | Templates, series detection, suggestions and the Upload templates page. |
 | `compare.js` | The Compare page, with SVG charts drawn from the analytics data. |
 | `likes.js` | The Likes column on the Content page, and like/dislike counts on Content overview cards. |
+| `outlier.js` | Outlier score badges: each video's views against your typical video of the same kind. |
+| `replies.js` | Saved replies in Studio's comment reply boxes. |
 | `shorts.js` | **Redirect Shorts to…**: sets the related video on many Shorts at once, using `video_manager/metadata_update` (`videoLinkageShortsAttribution`). |
 | `background.js` | Fallback that reads a public watch page for title, description and tags. |
 

@@ -89,6 +89,7 @@
       row('autoOpenUpload', 'Open automatically when uploading', 'Show templates and previous videos beside the upload dialog.'),
       row('pushLayout', 'Make room for the panel', 'Shrink Studio so the panel sits beside it instead of covering it.'),
       row('likesColumn', 'Likes column on the Content page', 'Adds likes, dislikes and like ratio back to your video list.'),
+      row('outlierScore', 'Outlier score', 'Shows how each video\'s views compare with your typical video (e.g. 2.4×) on the Content page.'),
       h('div', { class: 'muted small' }, 'Shortcut: Alt+V toggles the panel.'),
       h('button', { class: 'btn', onclick: () => { V.list = []; V.nextToken = null; V.loadedOnce = false; S.view = 'list'; render(); V.load(); } }, 'Refresh video list'));
   }

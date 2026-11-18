@@ -232,9 +232,12 @@
     async listAllWithType({ maxPages = 40 } = {}) {
       const channelId = getChannelId();
       if (!channelId) throw new Error('Could not detect your channel. Reload YouTube Studio and try again.');
+      const base = { videoId: true, title: true, thumbnailDetails: { all: true }, lengthSeconds: true, privacy: true, timePublishedSeconds: true, timeCreatedSeconds: true };
       const masks = [
-        { videoId: true, title: true, thumbnailDetails: { all: true }, lengthSeconds: true, privacy: true, timePublishedSeconds: true, timeCreatedSeconds: true, contentType: true },
-        { videoId: true, title: true, thumbnailDetails: { all: true }, lengthSeconds: true, privacy: true, timePublishedSeconds: true, timeCreatedSeconds: true },
+        Object.assign({ contentType: true, publicMetrics: { all: true } }, base),
+        Object.assign({ contentType: true }, base),
+        Object.assign({ publicMetrics: { all: true } }, base),
+        base,
       ];
       return withMasks(masks, async (mask) => {
         const out = [];

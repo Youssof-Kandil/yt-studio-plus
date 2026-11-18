@@ -39,6 +39,12 @@ Put two videos side by side: views, watch time, impressions, CTR, average view d
 ★ REDIRECT SHORTS IN BULK
 Select any number of Shorts and point them all at one of your long videos as their related video in one click – or clear the link on all of them.
 
+★ OUTLIER SCORE
+See at a glance which videos beat your typical performance: a "2.4×" badge next to every view count, with Shorts and long-form compared separately.
+
+★ SAVED REPLIES
+Answer comments faster with saved replies that fill in the commenter's name automatically. You still press Reply yourself.
+
 ★ LIKES COLUMN IS BACK
 See likes vs. dislikes for every video on the Content page, with a ratio bar.
 

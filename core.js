@@ -702,7 +702,7 @@ textarea.input { resize: vertical; min-height: 90px; line-height: 1.45; }
     for (const fn of YSP.onTick) { try { fn(); } catch (e) { console.error('[Studio Plus]', e); } }
   }, 600);
 
-  YSP.settings = { autoOpenDetails: true, autoOpenUpload: true, pushLayout: true, likesColumn: true };
+  YSP.settings = { autoOpenDetails: true, autoOpenUpload: true, pushLayout: true, likesColumn: true, outlierScore: true };
   YSP.settingsReady = (async () => {
     const s = await YSP.store.get('ysp_settings', 'sync');
     if (s) Object.assign(YSP.settings, s);

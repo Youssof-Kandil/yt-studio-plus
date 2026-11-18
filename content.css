@@ -55,6 +55,24 @@ li.ysp-mini .ysp-nav-label { font-size: 10px; max-width: 64px; white-space: norm
 .ysp-redirect-btn:hover { background: #a08ef7; }
 .ysp-redirect-btn svg { flex: none; }
 
+/* "Saved replies" button under comment reply boxes */
+.ysp-replies-btn { display: inline-flex; align-items: center; gap: 6px; margin-right: auto; padding: 0 12px; height: 32px; border-radius: 16px;
+  border: 0; background: var(--ysp-accent-soft); color: var(--ysp-accent); font: 500 13px Roboto, "Segoe UI", Arial, sans-serif; cursor: pointer; white-space: nowrap; }
+.ysp-replies-btn:hover { background: var(--ysp-accent-strong); }
+.ysp-replies-btn svg { flex: none; }
+
+/* Outlier score badge (views vs. your typical video) */
+.ysp-outlier { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 9px; font: 500 11px/18px Roboto, "Segoe UI", Arial, sans-serif;
+  white-space: nowrap; vertical-align: middle; cursor: help; color: var(--ysp-accent); background: var(--ysp-accent-soft); }
+.ysp-outlier-good { background: var(--ysp-accent-strong); }
+.ysp-outlier-hot { background: var(--ysp-accent); color: #fff; }
+html[dark] .ysp-outlier-hot { color: #0f0f0f; }
+.ysp-outlier-low { opacity: .6; }
+.ysp-outlier-young { outline: 1px dashed var(--ysp-accent); outline-offset: -1px; }
+/* Views cell is a right-aligned flex row: sit the badge right after the number, top-aligned. */
+.ysp-outlier-row { align-self: flex-start; flex: none; margin: 0 0 0 6px; }
+.ysp-outlier-card { margin-left: 8px; }
+
 /* Likes on Content overview cards */
 .ysp-card-likes { display: inline-flex; align-items: center; gap: 3px; margin-left: 8px; color: var(--ysp-accent); white-space: nowrap; }
 .ysp-card-likes > span { margin-right: 4px; }

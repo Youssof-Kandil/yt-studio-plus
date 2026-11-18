@@ -8,7 +8,7 @@ $version = $manifest.version
 # Files that ship in the extension (everything else – docs, store art, scripts – stays out)
 $include = @(
   'manifest.json', 'inject.js', 'background.js',
-  'core.js', 'panel.js', 'templates.js', 'likes.js', 'compare.js', 'shorts.js', 'content.css',
+  'core.js', 'panel.js', 'templates.js', 'likes.js', 'compare.js', 'shorts.js', 'outlier.js', 'replies.js', 'content.css',
   'icons/icon16.png', 'icons/icon32.png', 'icons/icon48.png', 'icons/icon128.png'
 )
 
