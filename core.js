@@ -545,7 +545,7 @@
   --good: #1e8e3e; font: 13px/1.4 Roboto, "Segoe UI", Arial, sans-serif; color: var(--fg); }
 :host(.dark) { --bg: #0f0f0f; --bg2: #1a1a1a; --bg3: #272727; --fg: #f1f1f1; --muted: #aaaaaa; --line: #2e2e2e;
   --accent: #b3a4ff; --accent-fg: #0f0f0f; --accent-soft: rgba(179, 164, 255, 0.10); --hover: rgba(255, 255, 255, 0.08);
-  --cur: rgba(179, 164, 255, 0.12); --good: #81c995; }
+  --cur: rgba(179, 164, 255, 0.12); --good: #81c995; --warn: #fdd663; --err: #f28b82; }
 .brand { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; color: var(--accent); background: var(--accent-soft); padding: 2px 8px; border-radius: 10px; letter-spacing: .2px; white-space: nowrap; }
 .brand::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 * { box-sizing: border-box; }

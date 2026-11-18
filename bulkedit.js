@@ -53,7 +53,9 @@
     const out = text.replace(re, (m, ...args) => { const idx = args[args.length - 2]; count++; spans.push({ idx, len: m.length }); return repl; });
     return { text: out, count, spans };
   }
-  const splitList = (s) => s.split(/[,\n]/).map((t) => t.trim()).filter(Boolean);
+  const splitList = (s) => s.split(/[,\n]/).map((t) => t.trim().replace(/\s+/g, ' ')).filter(Boolean);
+  // Tags YouTube refuses outright (angle brackets, or a single tag longer than the whole budget).
+  const badTag = (t) => /[<>]/.test(t) || t.length > LIMITS.tags;
   function tagsLength(tags) {
     // YouTube counts quotes around tags that contain spaces, plus separators.
     return tags.reduce((n, t) => n + t.length + (/\s/.test(t) ? 2 : 0), 0) + Math.max(0, tags.length - 1);
@@ -94,8 +96,11 @@
 del { background: color-mix(in srgb, var(--err) 22%, transparent); text-decoration: line-through; border-radius: 3px; padding: 0 1px; }
 ins { background: color-mix(in srgb, var(--good) 22%, transparent); text-decoration: none; border-radius: 3px; padding: 0 1px; }
 .warn { color: var(--err); font-size: 12px; }
+.note-i { color: var(--warn); font-size: 12px; }
+.cnt { margin-left: 6px; font-size: 11px; color: var(--muted); }
+.cnt.over { color: var(--err); font-weight: 500; }
 .st { flex: none; width: 18px; text-align: center; }
-.st.ok { color: var(--good); } .st.err { color: var(--err); }
+.st.ok { color: var(--good); } .st.err { color: var(--err); } .st.skip { color: var(--warn); }
 .empty { padding: 28px; text-align: center; color: var(--muted); }
 .ft { display: flex; align-items: center; gap: 8px; padding: 12px 20px; }
 .ft .spacer { flex: 1; }
@@ -170,12 +175,15 @@ ins { background: color-mix(in srgb, var(--good) 22%, transparent); text-decorat
   function plan() {
     const out = [];
     const re = S.mode === 'text' ? buildRegex(S.find, S) : null;
-    const add = S.mode === 'tags' ? splitList(S.addTags) : [];
+    const typed = S.mode === 'tags' ? splitList(S.addTags) : [];
+    const add = typed.filter((t) => !badTag(t));
+    S.badTags = typed.filter(badTag);
     const remove = S.mode === 'tags' ? new Set(splitList(S.removeTags).map((t) => t.toLowerCase())) : new Set();
     for (const id of scopeIds()) {
       const m = S.meta[id];
       if (!m) continue;
-      const p = { id, m, changes: {}, previews: [], warnings: [] };
+      // warnings block the video; notes are informational (it still updates).
+      const p = { id, m, changes: {}, previews: [], warnings: [], notes: [] };
       if (S.mode === 'text' && re) {
         if (S.inTitle) {
           const r = replaceAll(m.title, re, S.repl);
@@ -198,16 +206,30 @@ ins { background: color-mix(in srgb, var(--good) 22%, transparent); text-decorat
         }
       }
       if (S.mode === 'tags' && (add.length || remove.size)) {
-        let tags = m.tags.filter((t) => !remove.has(t.toLowerCase()));
-        const have = new Set(tags.map((t) => t.toLowerCase()));
-        const added = [];
-        for (const t of add) if (!have.has(t.toLowerCase())) { tags.push(t); have.add(t.toLowerCase()); added.push(t); }
+        const tags = m.tags.filter((t) => !remove.has(t.toLowerCase()));
         const removed = m.tags.filter((t) => remove.has(t.toLowerCase()));
+        const have = new Set(tags.map((t) => t.toLowerCase()));
+        const added = [], noRoom = [];
+        for (const t of add) {
+          if (have.has(t.toLowerCase())) continue;
+          // Add tags in the order typed, only while the total stays within 500.
+          if (tagsLength(tags.concat(t)) > LIMITS.tags) { noRoom.push(t); continue; }
+          tags.push(t); have.add(t.toLowerCase()); added.push(t);
+        }
+        const len = tagsLength(tags);
         if (added.length || removed.length) {
           p.changes.tags = tags;
-          p.previews.push({ field: 'Tags', added, removed });
-          const len = tagsLength(tags);
-          if (len > LIMITS.tags) p.warnings.push(`Tags would be ${len}/500 characters`);
+          p.previews.push({ field: 'Tags', added, removed, len });
+          if (noRoom.length) {
+            const names = noRoom.slice(0, 3).map((t) => `“${t}”`).join(', ') + (noRoom.length > 3 ? ` and ${noRoom.length - 3} more` : '');
+            p.notes.push(`${noRoom.length} ${noRoom.length === 1 ? 'tag doesn\'t' : 'tags don\'t'} fit under 500 characters, so ${noRoom.length === 1 ? 'it was' : 'they were'} left out: ${names}`);
+          }
+          // Only possible when a video was already over the limit before this edit.
+          if (len > LIMITS.tags) p.warnings.push(`Tags are ${len}/500 characters even after this change – remove some first`);
+        } else if (noRoom.length) {
+          p.previews.push({ field: 'Tags', added: [], removed: [], len });
+          p.warnings.push(`No room: this video already uses ${len}/500 tag characters`);
+          p.changes.tags = tags; // keeps the row visible; it's blocked by the warning
         }
       }
       if (Object.keys(p.changes).length) out.push(p);
@@ -274,7 +296,10 @@ ins { background: color-mix(in srgb, var(--good) 22%, transparent); text-decorat
         h('div', { class: 'form' },
           h('label', {}, 'Add tags (comma-separated)', input('addTags', 'e.g. gaming, rocket league')),
           h('label', {}, 'Remove tags (comma-separated)', input('removeTags', 'e.g. old tag, 2025'))),
-        h('div', { class: 'note', text: 'Tags already on a video aren\'t added twice. Removing ignores upper/lower case.' }),
+        h('div', { class: 'note', text: 'Tags already on a video aren\'t added twice. Removing ignores upper/lower case. YouTube allows 500 tag characters per video; if new tags don\'t all fit, the ones that fit are added in the order you typed them.' }),
+        (S.badTags && S.badTags.length)
+          ? h('div', { class: 'note', style: 'color: var(--err)', text: `⚠ Ignored ${S.badTags.map((t) => `“${t.length > 30 ? t.slice(0, 30) + '…' : t}”`).join(', ')}: tags can't contain < or > or be longer than 500 characters.` })
+          : null,
       ];
 
     let summary;
@@ -306,17 +331,20 @@ ins { background: color-mix(in srgb, var(--good) 22%, transparent); text-decorat
           if (pv.field === 'Tags') {
             changes.push(h('div', { class: 'chg' }, h('span', { class: 'lbl', text: 'Tags' }),
               pv.removed.map((t) => h('del', { text: t, style: 'margin-right:4px' })),
-              pv.added.map((t) => h('ins', { text: t, style: 'margin-right:4px' }))));
+              pv.added.map((t) => h('ins', { text: t, style: 'margin-right:4px' })),
+              h('span', { class: 'cnt' + (pv.len > LIMITS.tags ? ' over' : ''), text: `${pv.len}/500` })));
           } else changes.push(...snippet(pv));
         }
         preview.append(h('div', { class: 'row' + (off ? ' off' : '') },
-          st ? h('span', { class: 'st ' + st.kind, text: st.kind === 'ok' ? '✓' : st.kind === 'err' ? '✕' : '…', title: st.msg || '' }) : cb,
+          st ? h('span', { class: 'st ' + st.kind, text: { ok: '✓', err: '✕', skip: '–' }[st.kind] || '…', title: st.msg || '' }) : cb,
           h('img', { src: p.m.thumb || '', alt: '', loading: 'lazy' }),
           h('div', { class: 'main' },
             h('div', { class: 't', text: p.m.title, title: p.m.title }),
             changes,
             p.warnings.map((w) => h('div', { class: 'warn', text: '⚠ ' + w })),
-            st && st.kind === 'err' ? h('div', { class: 'warn', text: st.msg }) : null)));
+            (p.notes || []).map((n) => h('div', { class: 'note-i', text: 'ⓘ ' + n })),
+            st && st.kind === 'err' ? h('div', { class: 'warn', text: st.msg }) : null,
+            st && st.kind === 'skip' ? h('div', { class: 'note-i', text: st.msg }) : null)));
       }
     }
 
@@ -327,7 +355,9 @@ ins { background: color-mix(in srgb, var(--good) 22%, transparent); text-decorat
     });
     const undoBtn = S.undo && S.undo.length && !lock
       ? h('button', { class: 'link', text: `Undo (restore ${S.undo.length})`, onclick: runUndo }) : null;
-    const cancel = h('button', { class: 'btn', text: S.summary ? 'Close' : 'Cancel', disabled: lock, onclick: close });
+    const cancel = S.running
+      ? h('button', { class: 'btn danger', text: S.stopRequested ? 'Stopping…' : 'Stop', disabled: S.stopRequested, title: 'Finish the current video, then stop', onclick: () => { S.stopRequested = true; render(); } })
+      : h('button', { class: 'btn', text: S.summary ? 'Close' : 'Cancel', onclick: close });
     const msg = S.summary ? h('div', { class: 'msg ' + S.summary.kind, text: S.summary.text }) : null;
 
     back.replaceChildren(h('div', { class: 'card', role: 'dialog', 'aria-label': 'Bulk edit' }, ...[
@@ -350,21 +380,29 @@ ins { background: color-mix(in srgb, var(--good) 22%, transparent); text-decorat
 
   async function run(active) {
     if (S.running || !active.length) return;
-    S.running = true; S.summary = null; S.statuses = {}; S.undo = null; S.frozen = active;
+    S.running = true; S.stopRequested = false; S.summary = null; S.statuses = {}; S.undo = null; S.frozen = active;
     for (const p of active) S.statuses[p.id] = { kind: 'busy' };
     render();
     const undo = [];
-    let ok = 0, fail = 0;
+    let ok = 0, fail = 0, skipped = 0, streak = 0, haltReason = null;
     for (const p of active) {
+      if (haltReason || S.stopRequested) {
+        S.statuses[p.id] = { kind: 'skip', msg: haltReason || 'Not attempted – you pressed Stop' };
+        skipped++;
+        continue;
+      }
       const before = { title: p.m.title, description: p.m.description, tags: p.m.tags.slice() };
       try {
         await YSP.call('updateMetadata', Object.assign({ videoId: p.id }, p.changes), 30000);
         undo.push({ id: p.id, fields: Object.fromEntries(Object.keys(p.changes).map((k) => [k, before[k]])) });
         S.statuses[p.id] = { kind: 'ok' };
-        ok++;
+        ok++; streak = 0;
       } catch (e) {
         S.statuses[p.id] = { kind: 'err', msg: e.message };
-        fail++;
+        fail++; streak++;
+        // Three failures in a row usually means a shared cause (signed out, offline,
+        // YouTube refusing) – stop instead of hammering every remaining video.
+        if (streak >= 3) haltReason = 'Not attempted – stopped after 3 failures in a row';
       }
       render();
       await YSP.sleep(300);
@@ -389,7 +427,16 @@ ins { background: color-mix(in srgb, var(--good) 22%, transparent); text-decorat
     S.running = false;
     S.undo = undo;
     S.changedAny = S.changedAny || ok > 0;
-    S.summary = { kind: fail ? 'err' : 'ok', text: fail ? `${ok} updated, ${fail} failed. Hover ✕ for the reason.` : `Done: ${ok} ${ok === 1 ? 'video' : 'videos'} updated.` };
+    const parts = [`${ok} updated`];
+    if (fail) parts.push(`${fail} failed`);
+    if (skipped) parts.push(`${skipped} not attempted`);
+    S.summary = {
+      kind: fail || skipped ? 'err' : 'ok',
+      text: fail || skipped
+        ? parts.join(', ') + '.' + (haltReason ? ' Stopped after 3 failures in a row – check the first error, then try again.' : '') + (ok ? ' Undo restores the ones that changed.' : '')
+        : `Done: ${ok} ${ok === 1 ? 'video' : 'videos'} updated.`,
+    };
+    S.stopRequested = false;
     YSP.toast(S.summary.text, fail ? 'error' : 'ok');
     render();
   }

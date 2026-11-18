@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Studio Plus – Templates, Compare & Video Switcher",
   "short_name": "Studio Plus",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Upload templates with series auto-numbering, side-by-side video compare, likes column and a video switcher for YouTube Studio.",
   "icons": {
     "16": "icons/icon16.png",

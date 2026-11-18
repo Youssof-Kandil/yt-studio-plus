@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.2 – 2026-11-19
+- Find & replace, tags: new tags are added only while a video stays within YouTube's 500-character tag limit (in the order typed). Tags that don't fit are listed, and each video shows its tag count (for example 492/500).
+- Tags with < or >, or longer than 500 characters, are ignored with a warning.
+- Saving stops automatically after 3 failures in a row (remaining videos are marked not attempted), and a Stop button ends a run after the current video.
+
 ## 1.6.1 – 2026-11-19
 - **Find & replace:** select videos on Content, then find & replace text in titles and/or descriptions, or add/remove tags in bulk. Every change is previewed first, checked against YouTube's data after saving, and can be undone.
 
