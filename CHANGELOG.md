@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.5.1 – 2026-11-18
+- A small, closable Ko-fi banner at the top of the side panel, Upload templates and Compare videos. Closing it hides it everywhere until Studio is opened in a new tab.
+
 ## 1.5.0 – 2026-11-18
 - **Outlier score:** a 2.4×-style badge next to every view count on the Content page and overview cards. It compares the video with your typical video of the same kind (median of your last 30 settled public Shorts or long videos).
 - **Saved replies:** a Saved replies button under every comment reply box, with {name}, {handle} and {video} placeholders. It fills the box only; you still click Reply.

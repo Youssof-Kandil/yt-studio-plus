@@ -569,9 +569,44 @@ textarea.input { resize: vertical; min-height: 90px; line-height: 1.45; }
 .spin { width: 14px; height: 14px; border: 2px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: s .8s linear infinite; }
 @keyframes s { to { transform: rotate(360deg); } }
 .error { margin: 10px 6px; padding: 10px; border-radius: 8px; color: var(--err); background: color-mix(in srgb, var(--err) 10%, transparent); }
+.donate { display: flex; align-items: center; gap: 10px; padding: 8px 10px 8px 12px; border-radius: 10px; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent); font-size: 12.5px; line-height: 1.35; }
+.donate .d-txt { flex: 1; min-width: 0; }
+.donate .d-txt b { font-weight: 500; }
+.donate .d-go { flex: none; padding: 5px 12px; border-radius: 14px; background: var(--accent); color: var(--accent-fg); font-weight: 500; white-space: nowrap; text-decoration: none; }
+.donate .d-go:hover { filter: brightness(1.1); }
+.donate .d-x { flex: none; width: 24px; height: 24px; border: 0; border-radius: 50%; background: none; color: var(--muted); cursor: pointer; font-size: 13px; }
+.donate .d-x:hover { background: var(--hover); color: var(--fg); }
 .pill { text-transform: capitalize; font-size: 10.5px; padding: 0 6px; border-radius: 9px; background: var(--bg3); }
 .pill.public { color: var(--ok); } .pill.private { color: var(--muted); } .pill.unlisted { color: var(--warn); } .pill.draft { color: var(--err); }
 `;
+  // ---------------------------------------------------------------------------
+  // Gentle Ko-fi banner. Closing it hides every copy until Studio is opened in a
+  // new tab (sessionStorage is per tab), so it never nags within one session.
+  // ---------------------------------------------------------------------------
+  const KOFI_URL = 'https://ko-fi.com/youssofkandil';
+  const DONATE_KEY = 'ysp_donate_dismissed';
+  const donateEls = new Set();
+  YSP.donate = {
+    dismissed() { try { return sessionStorage.getItem(DONATE_KEY) === '1'; } catch (_) { return false; } },
+    dismiss() {
+      try { sessionStorage.setItem(DONATE_KEY, '1'); } catch (_) {}
+      for (const el of donateEls) el.remove();
+      donateEls.clear();
+    },
+    // Returns the banner element, or null when it was closed in this tab.
+    banner(style) {
+      if (YSP.donate.dismissed()) return null;
+      for (const old of donateEls) if (!old.isConnected) donateEls.delete(old); // panel re-renders often
+      const el = h('div', { class: 'donate', role: 'note', style },
+        h('span', { text: '☕' }),
+        h('span', { class: 'd-txt' }, h('b', { text: 'Finding Studio Plus useful? ' }), 'It\'s free and open source. A coffee helps keep it that way.'),
+        h('a', { class: 'd-go', href: KOFI_URL, target: '_blank', rel: 'noopener', text: 'Support on Ko-fi', onclick: () => YSP.donate.dismiss() }),
+        h('button', { class: 'd-x', title: 'Hide until next time', 'aria-label': 'Hide', text: '✕', onclick: () => YSP.donate.dismiss() }));
+      donateEls.add(el);
+      return el;
+    },
+  };
+
   YSP.makeHost = function (id, css) {
     const host = h('div', { id });
     const shadow = host.attachShadow({ mode: 'open' });
@@ -643,8 +678,10 @@ textarea.input { resize: vertical; min-height: 90px; line-height: 1.45; }
     YSP.nav.refresh();
   };
   YSP.page.header = function (title, extra) {
-    return h('div', { class: 'page-hd' }, h('h1', null, title, ' ', h('span', { class: 'brand', style: 'vertical-align: middle; margin-left: 8px', text: 'Studio Plus' })), extra || null,
+    const hd = h('div', { class: 'page-hd' }, h('h1', null, title, ' ', h('span', { class: 'brand', style: 'vertical-align: middle; margin-left: 8px', text: 'Studio Plus' })), extra || null,
       h('button', { class: 'close', title: 'Close', onclick: () => YSP.page.close() }, '✕'));
+    const banner = YSP.donate.banner('margin: -6px 0 18px');
+    return banner ? h('div', null, hd, banner) : hd;
   };
   window.addEventListener('resize', () => YSP.page.position());
 

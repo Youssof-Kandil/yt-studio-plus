@@ -54,6 +54,8 @@
     panel.replaceChildren();
     if (!S.open) return;
     panel.append(renderHeader());
+    const donate = YSP.donate.banner('margin: 8px 10px 0; flex: none');
+    if (donate) panel.append(donate);
     const body = h('div', { class: 'body' });
     if (S.view === 'settings') body.append(renderSettings());
     else if (S.view === 'compare') body.append(renderCopyFrom());
