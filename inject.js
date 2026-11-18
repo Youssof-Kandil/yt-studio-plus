@@ -256,6 +256,42 @@
         return { videos: out, hasType: !!mask.contentType };
       });
     },
+    // Title, full description and tags of many videos (for bulk find & replace).
+    async getMetadata({ videoIds }) {
+      const ids = (videoIds || []).filter((id) => /^[\w-]{11}$/.test(id));
+      const out = [];
+      for (let i = 0; i < ids.length; i += 50) {
+        const r = await innertube('creator/get_creator_videos', {
+          videoIds: ids.slice(i, i + 50),
+          mask: {
+            videoId: true, title: true, description: true, tags: { all: true }, privacy: true,
+            thumbnailDetails: { all: true }, timePublishedSeconds: true, timeCreatedSeconds: true, contentType: true,
+          },
+        });
+        out.push(...(r.videos || []));
+      }
+      return out;
+    },
+    // Save title / description / tags exactly as Studio's details page does
+    // (video_manager/metadata_update; only the fields passed are changed).
+    async updateMetadata({ videoId, title, description, tags }) {
+      if (!/^[\w-]{11}$/.test(videoId || '')) throw new Error('Bad video id');
+      const body = { encryptedVideoId: videoId };
+      if (typeof title === 'string') body.title = { newTitle: title.trim(), titleOperation: 'MDE_TEXT_UPDATE_OPERATION_SET' };
+      if (typeof description === 'string') body.description = { newDescription: description, descriptionOperation: 'MDE_TEXT_UPDATE_OPERATION_SET' };
+      if (Array.isArray(tags)) body.tags = { newTags: tags };
+      const r = await innertube('video_manager/metadata_update', body);
+      for (const k of ['title', 'description', 'tags']) {
+        const res = r[k];
+        if (res && res.success === false) {
+          throw new Error(`YouTube rejected the ${k}` + ((res.error && (res.error.errorMessage || res.error.code)) ? ': ' + (res.error.errorMessage || res.error.code) : ''));
+        }
+      }
+      if (r.overallResult && r.overallResult.resultCode && !/SUCCESS/i.test(r.overallResult.resultCode)) {
+        throw new Error('YouTube returned ' + r.overallResult.resultCode);
+      }
+      return { ok: true };
+    },
     // Current "related video" of each Short: { shortId: targetVideoId | null }.
     async getShortLinks({ videoIds }) {
       const ids = (videoIds || []).filter((id) => /^[\w-]{11}$/.test(id));

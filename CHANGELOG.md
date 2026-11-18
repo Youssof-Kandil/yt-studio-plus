@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.6.1 – 2026-11-19
+- **Find & replace:** select videos on Content, then find & replace text in titles and/or descriptions, or add/remove tags in bulk. Every change is previewed first, checked against YouTube's data after saving, and can be undone.
+
 ## 1.6.0 – 2026-11-18
 - Toolbar popup: click the Studio Plus icon to see the logo, a Ko-fi link, every feature and where to find it, and an Open YouTube Studio button.
 

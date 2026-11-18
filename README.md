@@ -60,6 +60,14 @@ On **Content → Shorts**, select one or more Shorts. The selection bar gets a v
 - The dialog shows each Short's current related video and a ✓ or ✕ per Short as it saves.
 - **Remove related video instead** clears the link on all selected Shorts. You click it twice to confirm.
 
+### Find & replace and bulk tags
+On **Content** (Videos, Shorts or Live), select videos. The selection bar gets a **Find & replace…** button.
+- **Find & replace** in titles and/or descriptions, with Match case and Whole words options. Leave "Replace with" empty to delete text, for example an old sponsor line.
+- **Tags:** add tags to many videos at once, or remove tags. Duplicates are skipped, and removing ignores upper/lower case.
+- Choose **Selected videos** or **All videos**.
+- A **preview** shows every change before anything is saved. Old text appears in red and new text in green, and you can untick any video. Changes that would break YouTube's limits are skipped with a ⚠: titles over 100 characters, descriptions over 5000, tags over 500, or `<` and `>`.
+- After saving, Studio Plus reads each video back to confirm YouTube stored it. **Undo** restores the previous titles, descriptions and tags.
+
 ### Outlier score
 Next to every view count on the Content page, and on the Content overview cards, a violet badge such as **2.4×** shows how the video is doing against your typical video.
 - **Typical** is the median views of your last 30 public videos of the same kind, Shorts and long-form counted separately, that are older than 7 days.
@@ -122,6 +130,7 @@ Either one writes `dist/studio-plus-<version>.zip` containing only the extension
 | `likes.js` | The Likes column on the Content page, and like/dislike counts on Content overview cards. |
 | `outlier.js` | Outlier score badges: each video's views against your typical video of the same kind. |
 | `replies.js` | Saved replies in Studio's comment reply boxes. |
+| `bulkedit.js` | **Find & replace…**: bulk title/description find & replace and tag edits with preview, read-back check and Undo (`video_manager/metadata_update`). |
 | `shorts.js` | **Redirect Shorts to…**: sets the related video on many Shorts at once, using `video_manager/metadata_update` (`videoLinkageShortsAttribution`). |
 | `background.js` | Fallback that reads a public watch page for title, description and tags. |
 

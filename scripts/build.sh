@@ -8,6 +8,6 @@ OUT="dist/studio-plus-$VERSION.zip"
 rm -f "$OUT"
 zip -q -X "$OUT" \
   manifest.json inject.js background.js \
-  core.js panel.js templates.js likes.js compare.js shorts.js outlier.js replies.js content.css popup.html popup.css popup.js \
+  core.js panel.js templates.js likes.js compare.js shorts.js outlier.js replies.js bulkedit.js content.css popup.html popup.css popup.js \
   icons/icon16.png icons/icon32.png icons/icon48.png icons/icon128.png
 echo "Built $OUT"

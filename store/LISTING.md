@@ -36,6 +36,9 @@ Studio Plus finds the series in your titles ("My Game | Ep 12") and offers "Cont
 ★ COMPARE VIDEOS
 Put two videos side by side: views, watch time, impressions, CTR, average view duration, retention curves, traffic sources and more – drawn on the same timeline so you compare them at the same age (first 24 hours, 7 days, 28 days…).
 
+★ FIND & REPLACE ACROSS VIDEOS
+Swap an old link or sponsor line in every description at once, fix a typo in many titles, or add/remove tags in bulk – with a full preview before saving and Undo after.
+
 ★ REDIRECT SHORTS IN BULK
 Select any number of Shorts and point them all at one of your long videos as their related video in one click – or clear the link on all of them.
 
