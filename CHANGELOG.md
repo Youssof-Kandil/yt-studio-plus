@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0 – 2026-11-18
+- **Redirect Shorts to…:** select Shorts on Content → Shorts and point all of them at one long-form video as their related video. You can also clear the related video on all of them.
+- Like and dislike counts on the video cards of the Content overview page.
+
 ## 1.3.0 – 2026-11-04
 - New violet logo and store artwork.
 - Removed the unused `clipboardWrite` permission (copying still works).

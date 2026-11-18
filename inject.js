@@ -227,6 +227,64 @@
         return { videos: r.videos || [], nextPageToken: r.nextPageToken || null, channelId };
       });
     },
+    // Every upload with its content type (CREATOR_CONTENT_TYPE_SHORTS for Shorts).
+    // Used by "Redirect Shorts to" to list long-form targets.
+    async listAllWithType({ maxPages = 40 } = {}) {
+      const channelId = getChannelId();
+      if (!channelId) throw new Error('Could not detect your channel. Reload YouTube Studio and try again.');
+      const masks = [
+        { videoId: true, title: true, thumbnailDetails: { all: true }, lengthSeconds: true, privacy: true, timePublishedSeconds: true, timeCreatedSeconds: true, contentType: true },
+        { videoId: true, title: true, thumbnailDetails: { all: true }, lengthSeconds: true, privacy: true, timePublishedSeconds: true, timeCreatedSeconds: true },
+      ];
+      return withMasks(masks, async (mask) => {
+        const out = [];
+        let pageToken = null;
+        for (let i = 0; i < maxPages; i++) {
+          const body = {
+            filter: { and: { operands: [{ channelIdIs: { value: channelId } }] } },
+            order: 'VIDEO_ORDER_DISPLAY_TIME_DESC', pageSize: 50, mask,
+          };
+          if (pageToken) body.pageToken = pageToken;
+          const r = await innertube('creator/list_creator_videos', body);
+          out.push(...(r.videos || []));
+          pageToken = r.nextPageToken;
+          if (!pageToken) break;
+        }
+        return { videos: out, hasType: !!mask.contentType };
+      });
+    },
+    // Current "related video" of each Short: { shortId: targetVideoId | null }.
+    async getShortLinks({ videoIds }) {
+      const ids = (videoIds || []).filter((id) => /^[\w-]{11}$/.test(id));
+      const out = {};
+      for (let i = 0; i < ids.length; i += 50) {
+        const r = await innertube('creator/get_creator_videos', {
+          videoIds: ids.slice(i, i + 50),
+          mask: { videoId: true, videoLinkageShortsAttribution: { all: true } },
+        });
+        for (const v of r.videos || []) {
+          const links = (v.videoLinkageShortsAttribution && v.videoLinkageShortsAttribution.links) || [];
+          out[v.videoId] = (links[0] && links[0].targetExternalVideoId) || null;
+        }
+      }
+      return out;
+    },
+    // Point a Short's "related video" at targetId (or clear it when targetId is null).
+    // Same request Studio's Short details page sends when you save the field.
+    async setShortLink({ videoId, targetId }) {
+      if (!/^[\w-]{11}$/.test(videoId || '')) throw new Error('Bad Short id');
+      if (targetId != null && !/^[\w-]{11}$/.test(targetId)) throw new Error('Bad target video id');
+      const r = await innertube('video_manager/metadata_update', {
+        encryptedVideoId: videoId,
+        videoLinkageShortsAttribution: { targetExternalVideoId: targetId ? [targetId] : [] },
+      });
+      const res = r.videoLinkageShortsAttribution;
+      if (res && res.success === false) throw new Error((res.error && (res.error.errorMessage || res.error.code)) || 'YouTube rejected the change');
+      if (r.overallResult && r.overallResult.resultCode && !/SUCCESS/i.test(r.overallResult.resultCode)) {
+        throw new Error('YouTube returned ' + r.overallResult.resultCode);
+      }
+      return { ok: true };
+    },
     async getVideo({ videoId }) {
       if (!/^[\w-]{11}$/.test(videoId || '')) throw new Error('Bad video id');
       return withMasks(DETAIL_MASKS, async (mask) => {

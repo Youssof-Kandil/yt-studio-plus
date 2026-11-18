@@ -53,6 +53,13 @@ Left menu → **Compare videos**. Inside a video, that video is preselected as *
   - overlaid audience retention curves
   - traffic sources side by side
 
+### Redirect Shorts to a video (bulk)
+On **Content → Shorts**, select one or more Shorts. The selection bar gets a violet **Redirect Shorts to…** button.
+- Pick one of your long-form videos from a searchable list. Shorts are left out of the list.
+- Every selected Short gets that video as its **related video**, the link viewers see on the Short.
+- The dialog shows each Short's current related video and a ✓ or ✕ per Short as it saves.
+- **Remove related video instead** clears the link on all selected Shorts. You click it twice to confirm.
+
 ### Likes column
 The Content page gets back a **Likes (vs. dislikes)** column: like ratio, counts and a ratio bar. You can turn it off in the panel's ⚙ settings.
 
@@ -92,7 +99,8 @@ Either one writes `dist/studio-plus-<version>.zip` containing only the extension
 | `panel.js` | The side panel (video switcher, Copy from…, settings). |
 | `templates.js` | Templates, series detection, suggestions and the Upload templates page. |
 | `compare.js` | The Compare page, with SVG charts drawn from the analytics data. |
-| `likes.js` | The Likes column on the Content page. |
+| `likes.js` | The Likes column on the Content page, and like/dislike counts on Content overview cards. |
+| `shorts.js` | **Redirect Shorts to…**: sets the related video on many Shorts at once, using `video_manager/metadata_update` (`videoLinkageShortsAttribution`). |
 | `background.js` | Fallback that reads a public watch page for title, description and tags. |
 
 There's no build step, no dependencies and no remote code. UI is rendered in Shadow DOM so it doesn't clash with Studio's styles.

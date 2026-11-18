@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Studio Plus – Templates, Compare & Video Switcher",
   "short_name": "Studio Plus",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Upload templates with series auto-numbering, side-by-side video compare, likes column and a video switcher for YouTube Studio.",
   "icons": {
     "16": "icons/icon16.png",
@@ -27,7 +27,7 @@
     },
     {
       "matches": ["https://studio.youtube.com/*"],
-      "js": ["core.js", "panel.js", "templates.js", "likes.js", "compare.js"],
+      "js": ["core.js", "panel.js", "templates.js", "likes.js", "compare.js", "shorts.js"],
       "css": ["content.css"],
       "run_at": "document_idle"
     }
