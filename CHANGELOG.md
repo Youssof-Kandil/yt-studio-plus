@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.1 – 2026-11-18
+- "Redirect Shorts to…" button: light violet with dark text, easier to read on the selection bar.
+
 ## 1.4.0 – 2026-11-18
 - **Redirect Shorts to…:** select Shorts on Content → Shorts and point all of them at one long-form video as their related video. You can also clear the related video on all of them.
 - Like and dislike counts on the video cards of the Content overview page.

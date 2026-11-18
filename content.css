@@ -49,10 +49,11 @@ li.ysp-mini .ysp-nav-label { font-size: 10px; max-width: 64px; white-space: norm
 
 /* "Redirect Shorts to…" in the Shorts bulk-action bar */
 .ysp-redirect-btn { display: inline-flex; align-items: center; align-self: center; gap: 6px; margin-left: 8px; padding: 6px 12px; height: 36px;
-  border-radius: 18px; border: 0; background: #6a4fd6; color: #fff;
+  border-radius: 18px; border: 0; background: #b3a4ff; color: #0f0f0f;
   font: 500 14px Roboto, "Segoe UI", Arial, sans-serif; cursor: pointer; white-space: nowrap; }
-/* The bulk bar is light even in dark mode, so the button uses the strong violet everywhere. */
-.ysp-redirect-btn:hover { background: #5a3fc6; }
+/* The bulk bar is light even in dark mode: light violet with near-black text reads well on it. */
+.ysp-redirect-btn:hover { background: #a08ef7; }
+.ysp-redirect-btn svg { flex: none; }
 
 /* Likes on Content overview cards */
 .ysp-card-likes { display: inline-flex; align-items: center; gap: 3px; margin-left: 8px; color: var(--ysp-accent); white-space: nowrap; }
