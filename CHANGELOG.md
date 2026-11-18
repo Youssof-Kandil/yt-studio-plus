@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.6.0 – 2026-11-18
+- Toolbar popup: click the Studio Plus icon to see the logo, a Ko-fi link, every feature and where to find it, and an Open YouTube Studio button.
+
 ## 1.5.1 – 2026-11-18
 - A small, closable Ko-fi banner at the top of the side panel, Upload templates and Compare videos. Closing it hides it everywhere until Studio is opened in a new tab.
 

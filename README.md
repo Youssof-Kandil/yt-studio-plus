@@ -83,6 +83,13 @@ Your other uploads sit next to any video's details or analytics page.
 - **Copy from…** shows an older video's title, description and tags next to the form, with Copy / Replace / Append buttons.
 - **Alt+V** toggles the panel.
 
+### Toolbar popup
+Clicking the Studio Plus icon in Chrome's toolbar opens a small window with:
+- the logo and version
+- a Ko-fi support link
+- a list of every feature and where to find it in Studio
+- an **Open YouTube Studio** button, which switches to an open Studio tab if you already have one
+
 ## Install from source
 
 1. Download or clone this repo.

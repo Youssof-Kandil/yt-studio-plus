@@ -1,0 +1,53 @@
+/* Studio Plus toolbar popup – matches Studio's colours, violet = ours. */
+:root {
+  --bg: #ffffff; --bg2: #f6f5fb; --fg: #0f0f0f; --muted: #606060; --line: #e5e5e5;
+  --accent: #6a4fd6; --accent-fg: #ffffff; --accent-soft: rgba(106, 79, 214, 0.08);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f0f0f; --bg2: #1a1a1a; --fg: #f1f1f1; --muted: #aaaaaa; --line: #2e2e2e;
+    --accent: #b3a4ff; --accent-fg: #0f0f0f; --accent-soft: rgba(179, 164, 255, 0.10);
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  width: 380px; padding: 16px 16px 12px; background: var(--bg); color: var(--fg);
+  font: 13px/1.4 Roboto, "Segoe UI", Arial, sans-serif; border-top: 3px solid var(--accent);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.top { display: flex; align-items: center; gap: 10px; }
+.logo { width: 52px; height: 52px; margin: -6px -4px -6px -6px; flex: none; }
+.name { flex: 1; min-width: 0; }
+h1 { margin: 0; font-size: 18px; font-weight: 600; }
+.tag { margin: 2px 0 0; color: var(--muted); font-size: 12px; }
+.ver { align-self: flex-start; font-size: 11px; color: var(--accent); background: var(--accent-soft); padding: 2px 8px; border-radius: 10px; }
+
+.donate {
+  display: flex; align-items: center; gap: 10px; margin: 14px 0 6px; padding: 10px 12px;
+  border-radius: 10px; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.d-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; font-size: 12px; }
+.d-txt b { font-size: 13px; font-weight: 500; }
+.d-txt span { color: var(--muted); }
+.d-go { flex: none; padding: 7px 12px; border-radius: 16px; background: var(--accent); color: var(--accent-fg); font-weight: 500; white-space: nowrap; }
+.d-go:hover { text-decoration: none; filter: brightness(1.08); }
+
+h2 { margin: 14px 0 6px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
+.features { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.features li { display: flex; gap: 10px; padding: 7px 8px; border-radius: 8px; }
+.features li:hover { background: var(--bg2); }
+.ic { width: 22px; text-align: center; font-size: 15px; flex: none; line-height: 20px; }
+.features div { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.features b { font-weight: 500; }
+.features span { color: var(--muted); font-size: 12px; }
+.features em { font-style: normal; font-size: 11px; color: var(--accent); }
+
+footer { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.btn { width: 100%; padding: 9px 12px; border-radius: 18px; border: 0; font: 500 13px Roboto, "Segoe UI", Arial, sans-serif; cursor: pointer; }
+.btn.primary { background: var(--fg); color: var(--bg); }
+.btn.primary:hover { opacity: .9; }
+.links { display: flex; gap: 6px; font-size: 12px; color: var(--muted); }
+.note { margin: 0; font-size: 11px; color: var(--muted); text-align: center; }
