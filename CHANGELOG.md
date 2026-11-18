@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.3 – 2026-11-19
+- **Pre-publish checklist:** a pill next to Publish (upload dialog) and Save (details page) shows what's missing: title, description, tags, playlist, custom thumbnail, end screen, audience, plus an optional hashtag check. Click it for details. It never blocks publishing.
+- Choose the checks or turn the checklist off in ⚙ Settings; the checklist has a direct ⚙ Choose checks / turn off link.
+
 ## 1.6.2 – 2026-11-19
 - Find & replace, tags: new tags are added only while a video stays within YouTube's 500-character tag limit (in the order typed). Tags that don't fit are listed, and each video shows its tag count (for example 492/500).
 - Tags with < or >, or longer than 500 characters, are ignored with a warning.

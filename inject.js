@@ -256,6 +256,30 @@
         return { videos: out, hasType: !!mask.contentType };
       });
     },
+    // End screens (read-only): { videoId: endscreen | null }.
+    async getEndscreens({ videoIds }) {
+      const ids = (videoIds || []).filter((id) => /^[\w-]{11}$/.test(id));
+      const out = {};
+      for (let i = 0; i < ids.length; i += 20) {
+        const r = await innertube('creator/get_creator_endscreens', { encryptedVideoIds: ids.slice(i, i + 20) });
+        for (const e of r.endscreens || []) if (e.encryptedVideoId) out[e.encryptedVideoId] = e;
+        for (const id of ids.slice(i, i + 20)) if (!(id in out)) out[id] = null;
+      }
+      return out;
+    },
+    // Exact durations in ms: { videoId: ms }.
+    async getDurations({ videoIds }) {
+      const ids = (videoIds || []).filter((id) => /^[\w-]{11}$/.test(id));
+      const out = {};
+      for (let i = 0; i < ids.length; i += 50) {
+        const r = await innertube('creator/get_creator_videos', {
+          videoIds: ids.slice(i, i + 50),
+          mask: { videoId: true, videoDurationMs: true, lengthSeconds: true },
+        });
+        for (const v of r.videos || []) out[v.videoId] = Number(v.videoDurationMs) || (Number(v.lengthSeconds) || 0) * 1000 || null;
+      }
+      return out;
+    },
     // Title, full description and tags of many videos (for bulk find & replace).
     async getMetadata({ videoIds }) {
       const ids = (videoIds || []).filter((id) => /^[\w-]{11}$/.test(id));

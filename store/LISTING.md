@@ -36,6 +36,9 @@ Studio Plus finds the series in your titles ("My Game | Ep 12") and offers "Cont
 ★ COMPARE VIDEOS
 Put two videos side by side: views, watch time, impressions, CTR, average view duration, retention curves, traffic sources and more – drawn on the same timeline so you compare them at the same age (first 24 hours, 7 days, 28 days…).
 
+★ PRE-PUBLISH CHECKLIST
+A small reminder next to Publish shows what you forgot – custom thumbnail, playlist, tags, end screen, description. Choose your own checks or turn it off.
+
 ★ FIND & REPLACE ACROSS VIDEOS
 Swap an old link or sponsor line in every description at once, fix a typo in many titles, or add/remove tags in bulk – with a full preview before saving and Undo after.
 

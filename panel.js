@@ -92,8 +92,32 @@
       row('pushLayout', 'Make room for the panel', 'Shrink Studio so the panel sits beside it instead of covering it.'),
       row('likesColumn', 'Likes column on the Content page', 'Adds likes, dislikes and like ratio back to your video list.'),
       row('outlierScore', 'Outlier score', 'Shows how each video\'s views compare with your typical video (e.g. 2.4×) on the Content page.'),
+      renderChecklistSettings(),
       h('div', { class: 'muted small' }, 'Shortcut: Alt+V toggles the panel.'),
       h('button', { class: 'btn', onclick: () => { V.list = []; V.nextToken = null; V.loadedOnce = false; S.view = 'list'; render(); V.load(); } }, 'Refresh video list'));
+  }
+
+  // Pre-publish checklist: master switch + one checkbox per check.
+  function renderChecklistSettings() {
+    const checks = (YSP.checklist && YSP.checklist.CHECKS) || [];
+    const items = YSP.settings.checklistItems || {};
+    const on = YSP.settings.checklist !== false;
+    const master = h('input', { type: 'checkbox', checked: on });
+    master.addEventListener('change', () => { YSP.settings.checklist = master.checked; YSP.saveSettings(); render(); });
+    const sub = h('div', { class: 'check-items' + (on ? '' : ' off') },
+      checks.map((c) => {
+        const cb = h('input', { type: 'checkbox', checked: c.id in items ? !!items[c.id] : c.on, disabled: !on });
+        cb.addEventListener('change', () => {
+          YSP.settings.checklistItems = Object.assign({}, YSP.settings.checklistItems, { [c.id]: cb.checked });
+          YSP.saveSettings();
+        });
+        return h('label', { class: 'check-item' }, cb, h('span', { text: c.label }));
+      }));
+    return h('div', { class: 'set-group', id: 'checklist-settings' },
+      h('label', { class: 'set-row' }, master, h('div', null,
+        h('div', { text: 'Pre-publish checklist' }),
+        h('div', { class: 'muted', text: 'A reminder next to Publish/Save listing what\'s missing. It never blocks publishing. Pick what it checks:' }))),
+      sub);
   }
 
   function renderListView() {
@@ -422,6 +446,13 @@ a.vtitle:hover { color: var(--accent); }
 .settings { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
 .set-row { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
 .set-row input { margin-top: 3px; accent-color: var(--accent); }
+.set-group { display: flex; flex-direction: column; gap: 6px; padding: 8px; margin: 0 -8px; border-radius: 8px; }
+.set-group.flash { animation: flash 1.6s ease; }
+@keyframes flash { 0%, 60% { background: var(--accent-soft); } 100% { background: transparent; } }
+.check-items { display: flex; flex-direction: column; gap: 4px; padding-left: 24px; }
+.check-items.off { opacity: .45; }
+.check-item { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12.5px; }
+.check-item input { accent-color: var(--accent); }
 /* template section (templates.js) */
 .tpl-section { padding: 10px 12px 4px; display: flex; flex-direction: column; gap: 6px; }
 .tpl-section .sec-hd { display: flex; align-items: center; gap: 8px; }

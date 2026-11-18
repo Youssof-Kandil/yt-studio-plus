@@ -55,6 +55,14 @@ li.ysp-mini .ysp-nav-label { font-size: 10px; max-width: 64px; white-space: norm
 .ysp-redirect-btn:hover { background: #a08ef7; }
 .ysp-redirect-btn svg { flex: none; }
 
+/* Pre-publish checklist pill next to Publish / Save */
+.ysp-checklist-pill { display: inline-flex; align-items: center; gap: 7px; align-self: center; margin-right: 10px; padding: 0 12px; height: 32px;
+  border-radius: 16px; border: 1px solid color-mix(in srgb, var(--ysp-accent) 40%, transparent); background: var(--ysp-accent-soft);
+  color: var(--ysp-accent); font: 500 13px Roboto, "Segoe UI", Arial, sans-serif; cursor: pointer; white-space: nowrap; vertical-align: middle; }
+.ysp-checklist-pill:hover { background: var(--ysp-accent-strong); }
+.ysp-checklist-pill .dot { width: 8px; height: 8px; border-radius: 50%; background: #f9ab00; flex: none; }
+.ysp-checklist-pill.ok .dot { background: #34a853; }
+
 /* "Saved replies" button under comment reply boxes */
 .ysp-replies-btn { display: inline-flex; align-items: center; gap: 6px; margin-right: auto; padding: 0 12px; height: 32px; border-radius: 16px;
   border: 0; background: var(--ysp-accent-soft); color: var(--ysp-accent); font: 500 13px Roboto, "Segoe UI", Arial, sans-serif; cursor: pointer; white-space: nowrap; }
